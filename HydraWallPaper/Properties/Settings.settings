@@ -1,0 +1,21 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="HydraPaper.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="ChangeInterval" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">1</Value>
+    </Setting>
+    <Setting Name="SingleScreenImagePath" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="SingleScreenImageBehavior" Type="Common.ImageBehavior" Scope="User">
+      <Value Profile="(Default)">TouchInside</Value>
+    </Setting>
+    <Setting Name="MultiScreenImagePath" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="MultiScreenImageBehavior" Type="Common.ImageBehavior" Scope="User">
+      <Value Profile="(Default)">TouchOutside</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>
