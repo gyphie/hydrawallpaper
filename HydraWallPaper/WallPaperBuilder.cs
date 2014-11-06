@@ -13,8 +13,12 @@ namespace HydraPaper
 	{
 		public static void BuildWallPaper(JobArguments settings)
 		{
-			UpdateFileList(settings.Files, settings.Settings.SingleScreenImagePath, true);
-			UpdateFileList(settings.Files, settings.Settings.MultiScreenImagePath, false);
+			if (settings.RefreshFilesList)
+			{
+				UpdateFileList(settings.Files, settings.Settings.SingleScreenImagePath, true);
+				UpdateFileList(settings.Files, settings.Settings.MultiScreenImagePath, false);
+				settings.RefreshFilesList = false;
+			}
 
 			string wallpaperFileName = string.Empty;
 

@@ -52,7 +52,7 @@
     <UseVSHostingProcess>true</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Assets\Hydra.ico</ApplicationIcon>
+    <ApplicationIcon>Resources\HydraIcon.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject />
@@ -97,6 +97,11 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Icons.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Icons.resx</DependentUpon>
+    </Compile>
     <Compile Include="ImageBehavior.cs" />
     <Compile Include="JobArguments.cs" />
     <Compile Include="NonBlockingConsole.cs" />
@@ -112,9 +117,15 @@
       <DependentUpon>Form1.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Icons.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Icons.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Assets\Hydra.ico" />
+    <EmbeddedResource Include="Resources\HydraIcon.ico" />
+    <EmbeddedResource Include="Resources\HydraStoppedIcon.ico" />
+    <EmbeddedResource Include="Resources\HydraBlankIcon.ico" />
     <Content Include="Assets\Ookii.Dialogs.dll" />
     <Content Include="Assets\Ookoo.Dialogs.dll license.txt" />
     <Content Include="Assets\Screen.bmp" />

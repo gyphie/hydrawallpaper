@@ -102,6 +102,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.txtSSIImageFolderPath.Location = new System.Drawing.Point(136, 37);
 			this.txtSSIImageFolderPath.Name = "txtSSIImageFolderPath";
+			this.txtSSIImageFolderPath.ReadOnly = true;
 			this.txtSSIImageFolderPath.Size = new System.Drawing.Size(355, 20);
 			this.txtSSIImageFolderPath.TabIndex = 1;
 			// 
@@ -300,6 +301,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.txtMSIImageFolderPath.Location = new System.Drawing.Point(136, 122);
 			this.txtMSIImageFolderPath.Name = "txtMSIImageFolderPath";
+			this.txtMSIImageFolderPath.ReadOnly = true;
 			this.txtMSIImageFolderPath.Size = new System.Drawing.Size(355, 20);
 			this.txtMSIImageFolderPath.TabIndex = 1;
 			// 

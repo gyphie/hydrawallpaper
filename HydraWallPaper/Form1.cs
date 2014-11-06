@@ -94,7 +94,7 @@ namespace HydraPaper
 
 		private void btnExit_Click(object sender, EventArgs e)
 		{
-			this.timRotate.Stop();
+			this.stopRotateTimer(false);
 			this.CleanlyExitApp();
 		}
 
@@ -143,6 +143,7 @@ namespace HydraPaper
 			if (this.dlgVistaFolder.ShowDialog() == DialogResult.OK)
 			{
 				targetTextBox.Text = this.dlgVistaFolder.SelectedPath;
+				this.jobArguments.RefreshFilesList = true;
 			}
 		}
 
@@ -197,9 +198,9 @@ namespace HydraPaper
 		{
 			this.asyncOp.Post((state) =>
 			{
-				this.timRotate.Stop();
+				this.stopRotateTimer(false);
 				this.UpdateWallPaper();
-				this.timRotate.Start();
+				this.startRotateTimer();
 				Program.DebugMessage("Started rotate timer");
 			}, null);
 		}
@@ -215,7 +216,7 @@ namespace HydraPaper
 					Program.DebugMessage("Detected lock or remote session. Stopping rotation.");
 					this.AppStatus = System.Windows.Forms.SystemInformation.TerminalServerSession ? ApplicationStatus.Remote : ApplicationStatus.Locked;
 					this.timDisplaySettingsChanged.Stop();
-					this.timRotate.Stop();
+					this.stopRotateTimer(true);
 					this.SaveSettings();
 					this.blankToolStripMenuItem_Click(null, null);
 					break;
@@ -225,9 +226,9 @@ namespace HydraPaper
 					this.AppStatus = System.Windows.Forms.SystemInformation.TerminalServerSession ? ApplicationStatus.Remote : ApplicationStatus.Desktop;
 					if (this.WindowState == FormWindowState.Minimized)
 					{
-						this.timRotate.Stop();
+						this.stopRotateTimer(false);
 						this.UpdateWallPaper();
-						this.timRotate.Start();
+						this.startRotateTimer();
 						Program.DebugMessage("Started rotate timer");
 					}
 					break;
@@ -249,17 +250,18 @@ namespace HydraPaper
 
 		private void btnStart_Click(object sender, EventArgs e)
 		{
-			this.timRotate.Stop();
+			this.stopRotateTimer(false);
 			this.SaveSettings();
 			this.WindowState = FormWindowState.Minimized;
+			this.jobArguments.RefreshFilesList = true;
 			this.UpdateWallPaper();
-			this.timRotate.Start();
+			this.startRotateTimer();
 			Program.DebugMessage("Started rotate timer");
 		}
 
 		private void openToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			this.timRotate.Stop();
+			this.stopRotateTimer(false);
 			this.formCanBeVisible = true;
 			this.Show();
 			this.WindowState = FormWindowState.Normal;
@@ -300,20 +302,20 @@ namespace HydraPaper
 		{
 			if (this.timRotate.Enabled)
 			{
-				this.timRotate.Stop();
+				this.stopRotateTimer(false);
 				Program.DebugMessage("Stopped rotate timer");
 			}
 			else
 			{
 				this.UpdateWallPaper();
-				this.timRotate.Start();
+				this.startRotateTimer();
 				Program.DebugMessage("Started rotate timer");
 			}
 		}
 
 		private void blankToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			this.timRotate.Stop();
+			this.stopRotateTimer(true);
 			Program.DebugMessage("Stopped rotate timer. Blanked wallpaper.");
 			CSSetDesktopWallpaper.SolidColor.SetColor(Color.Black);
 
@@ -351,14 +353,25 @@ namespace HydraPaper
 		private void nextToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			bool wasEnabled = this.timRotate.Enabled;
-			this.timRotate.Stop();
+			this.stopRotateTimer(false);
 			this.UpdateWallPaper();
 
 			if (wasEnabled)	// Reset the timer if it's running
 			{
-				this.timRotate.Start();
+				this.startRotateTimer();
 			}
 
+		}
+
+		private void stopRotateTimer(bool blank)
+		{
+			this.timRotate.Stop();
+			this.niTray.Icon = blank ? Icons.HydraBlankIcon : Icons.HydraStoppedIcon;
+		}
+		private void startRotateTimer()
+		{
+			this.timRotate.Start();
+			this.niTray.Icon = Icons.HydraIcon;
 		}
 	}
 }
