@@ -209,7 +209,6 @@
             0,
             0,
             0});
-			this.numRotateMinutes.ValueChanged += new System.EventHandler(this.numRotateMinutes_ValueChanged);
 			// 
 			// btnSSIImageFolderChooser
 			// 

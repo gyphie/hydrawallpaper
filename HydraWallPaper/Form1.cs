@@ -7,6 +7,8 @@ using System.Windows.Forms;
 using Common;
 using HydraPaper.Properties;
 using Ookii.Dialogs;
+using System.Diagnostics;
+using System.Reflection;
 
 namespace HydraPaper
 {
@@ -61,7 +63,7 @@ namespace HydraPaper
 	
 			this.cmbMSIImageSize.DataSource = behaviors;
 
-			this.timRotate = new System.Timers.Timer();
+			this.timRotate = new System.Timers.Timer(60000);	// Timer with a default of 1 minute
 			this.timRotate.Elapsed += timRotate_Elapsed;
 			this.timRotate.AutoReset = true;
 
@@ -70,6 +72,8 @@ namespace HydraPaper
 			this.timDisplaySettingsChanged.AutoReset = false;
 
 			this.asyncOp = AsyncOperationManager.CreateOperation(null);
+
+			this.Text += " v" + FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location).ProductVersion;
 		}
 
 		bool formCanBeVisible = false;
@@ -277,11 +281,6 @@ namespace HydraPaper
 			}
 		}
 
-		private void numRotateMinutes_ValueChanged(object sender, EventArgs e)
-		{
-			this.timRotate.Interval = Convert.ToInt32(this.numRotateMinutes.Value * 60000);
-		}
-
 		private void niTray_MouseDoubleClick(object sender, MouseEventArgs e)
 		{
 			this.openToolStripMenuItem_Click(null, null);
@@ -370,6 +369,7 @@ namespace HydraPaper
 		}
 		private void startRotateTimer()
 		{
+			this.timRotate.Interval = Math.Max(Convert.ToInt32(this.numRotateMinutes.Value * 60000), 60000);
 			this.timRotate.Start();
 			this.niTray.Icon = Icons.HydraIcon;
 		}

@@ -15,6 +15,7 @@ namespace HydraPaper
 		{
 			if (settings.RefreshFilesList)
 			{
+				settings.Files.Clear();
 				UpdateFileList(settings.Files, settings.Settings.SingleScreenImagePath, true);
 				UpdateFileList(settings.Files, settings.Settings.MultiScreenImagePath, false);
 				settings.RefreshFilesList = false;
@@ -55,6 +56,7 @@ namespace HydraPaper
 
 		public static void UpdateFileList(List<FileProperties> files, string path, bool isSingleScreen)
 		{
+			System.Diagnostics.Stopwatch.StartNew();
 
 			List<FileInfo> fis = new List<FileInfo>();
 
@@ -71,34 +73,14 @@ namespace HydraPaper
 			}
 			catch (Exception ex) { Program.DebugMessage("Exception in Update FileList: {0}", ex.Message); }
 
-				List<string> fileNames = fis.Select(f => f.FullName).ToList();
+			foreach (FileInfo fileInfo in fis)
+			{
+				files.Add(new FileProperties(fileInfo.FullName, isSingleScreen));
+			}
 
-				// Remove files no longer in the directory
-				for (int i = 0; i < files.Count; )
-				{
-					if (files[i].IsSingleScreen != isSingleScreen)
-					{
-						i++;
-						continue;
-					}
+			Program.DebugMessage("Added {0} {1} files", files.Count.ToString(), isSingleScreen ? "single screen" : "multi screen");
 
-					if (!fileNames.Contains(files[i].Filename))
-					{
-						files.RemoveAt(i);
-					}
-					else
-					{
-						i++;
-					}
-				}
-
-				foreach (string fileName in fileNames)
-				{
-					if (files.Count(f => f.Filename == fileName) == 0)
-					{
-						files.Add(new FileProperties(fileName, isSingleScreen));
-					}
-				}
+			Program.DebugMessage("Time to load files: {0}", new TimeSpan(System.Diagnostics.Stopwatch.GetTimestamp()).TotalSeconds.ToString());
 		}
 
 		public static FileProperties GetFile(List<FileProperties> files, bool isSingleScreen, Random randomizer)
@@ -108,7 +90,7 @@ namespace HydraPaper
 			// If there were no unshown files reset the list and try again
 			if (unshownFiles.Count() == 0)
 			{
-				//Program.DebugMessage("No unshown {0} files found. Resetting the list.", isSingleScreen ? "single screen" : "multi screen");
+				Program.DebugMessage("No unshown {0} files found. Resetting the list.", isSingleScreen ? "single screen" : "multi screen");
 				files.Where(f => f.IsSingleScreen == isSingleScreen).ToList().ForEach(f => f.HasBeenShown = false);
 				unshownFiles = files.Where(f => !f.HasBeenShown && f.IsSingleScreen == isSingleScreen);
 			}
@@ -118,11 +100,11 @@ namespace HydraPaper
 			if (selectedFile != null)
 			{
 				selectedFile.HasBeenShown = true;
-				//Program.DebugMessage("Selected file {0} for {1}", selectedFile.Filename, isSingleScreen ? "single screen" : "multi screen");
+				Program.DebugMessage("Selected file {0} for {1}", selectedFile.Filename, isSingleScreen ? "single screen" : "multi screen");
 			}
 			else
 			{
-				//Program.DebugMessage("No {0} file found", isSingleScreen ? "single screen" : "multi screen");
+				Program.DebugMessage("No {0} file found", isSingleScreen ? "single screen" : "multi screen");
 			}
 
 			return selectedFile;
