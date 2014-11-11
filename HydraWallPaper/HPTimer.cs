@@ -33,6 +33,7 @@ namespace HydraPaper
 		private void InternalElapsed(object sender, System.Timers.ElapsedEventArgs e)
 		{
 			this.intervalStarted = DateTime.UtcNow;
+			this.userElapsed(sender, e);
 		}
 
 		public double Interval

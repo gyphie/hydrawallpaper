@@ -17,6 +17,7 @@ namespace HydraPaper
 		private VistaFolderBrowserDialog dlgVistaFolder;
 		private JobArguments jobArguments;
 		private System.Timers.Timer timDisplaySettingsChanged;
+		private System.Windows.Forms.Timer timCMSStatus;
 		private HPTimer timRotate;
 		private ApplicationStatus AppStatus = ApplicationStatus.None;
 		private AsyncOperation asyncOp;
@@ -71,6 +72,11 @@ namespace HydraPaper
 			this.timDisplaySettingsChanged = new System.Timers.Timer(3000);
 			this.timDisplaySettingsChanged.Elapsed += displayTimer_Elapsed;
 			this.timDisplaySettingsChanged.AutoReset = false;
+
+			this.timCMSStatus = new System.Windows.Forms.Timer();
+			this.timCMSStatus.Interval = 1000;
+			this.timCMSStatus.Tick += timCMSStatus_Elapsed;
+			this.timDisplaySettingsChanged.AutoReset = true;
 
 			this.asyncOp = AsyncOperationManager.CreateOperation(null);
 
@@ -287,7 +293,10 @@ namespace HydraPaper
 
 		private void niTray_MouseDoubleClick(object sender, MouseEventArgs e)
 		{
-			this.openToolStripMenuItem_Click(null, null);
+			if (e.Button == System.Windows.Forms.MouseButtons.Left)
+			{
+				this.openToolStripMenuItem_Click(null, null);
+			}
 		}
 
 		private void frmMain_FormClosing(object sender, FormClosingEventArgs e)
@@ -350,7 +359,7 @@ namespace HydraPaper
 			{
 				var timeRemaining = new TimeSpan(0, 0, 0, 0, Convert.ToInt32(this.timRotate.MillisecondsRemaining));
 				
-				statusText += string.Format(" - Running - next in {0}m {1}s", timeRemaining.Minutes, timeRemaining.Seconds);
+				statusText += string.Format(" - Update in {0}m {1}s", timeRemaining.Minutes, timeRemaining.Seconds);
 			}
 			else
 			{
@@ -387,9 +396,31 @@ namespace HydraPaper
 			this.niTray.Icon = Icons.HydraIcon;
 		}
 
-		private void niTray_Click(object sender, EventArgs e)
+		private void niTray_MouseClick(object sender, MouseEventArgs e)
 		{
-			nextToolStripMenuItem_Click(null, null);
+			if (e.Button == System.Windows.Forms.MouseButtons.Left)
+			{
+				nextToolStripMenuItem_Click(null, null);
+			}
 		}
+
+		private void cmsTray_VisibleChanged(object sender, EventArgs e)
+		{
+			var cms = sender as ContextMenuStrip;
+			if (cms.Visible)
+			{
+				this.timCMSStatus.Start();
+			}
+			else
+			{
+				this.timCMSStatus.Stop();
+			}
+		}
+
+		void timCMSStatus_Elapsed(object sender, System.EventArgs e)
+		{
+			this.cmsTray_Opening(null, null);
+		}
+
 	}
 }
