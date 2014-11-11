@@ -59,6 +59,8 @@
 			this.lblMSIResizeMethod = new System.Windows.Forms.Label();
 			this.cmbMSIImageSize = new System.Windows.Forms.ComboBox();
 			this.btnMSIImageFolderChooser = new System.Windows.Forms.Button();
+			this.lblImagesUsed = new System.Windows.Forms.Label();
+			this.txtImagesUsed = new System.Windows.Forms.TextBox();
 			this.cmsTray.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.numRotateMinutes)).BeginInit();
 			this.SuspendLayout();
@@ -66,7 +68,7 @@
 			// btnStart
 			// 
 			this.btnStart.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.btnStart.Location = new System.Drawing.Point(12, 191);
+			this.btnStart.Location = new System.Drawing.Point(12, 245);
 			this.btnStart.Name = "btnStart";
 			this.btnStart.Size = new System.Drawing.Size(75, 23);
 			this.btnStart.TabIndex = 7;
@@ -78,7 +80,7 @@
 			// 
 			this.btnExit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.btnExit.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-			this.btnExit.Location = new System.Drawing.Point(460, 191);
+			this.btnExit.Location = new System.Drawing.Point(460, 245);
 			this.btnExit.Name = "btnExit";
 			this.btnExit.Size = new System.Drawing.Size(75, 23);
 			this.btnExit.TabIndex = 9;
@@ -110,7 +112,7 @@
 			// 
 			this.lblRotateTime.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
 			this.lblRotateTime.AutoSize = true;
-			this.lblRotateTime.Location = new System.Drawing.Point(215, 196);
+			this.lblRotateTime.Location = new System.Drawing.Point(215, 250);
 			this.lblRotateTime.Name = "lblRotateTime";
 			this.lblRotateTime.Size = new System.Drawing.Size(67, 13);
 			this.lblRotateTime.TabIndex = 5;
@@ -123,6 +125,7 @@
 			this.niTray.Icon = ((System.Drawing.Icon)(resources.GetObject("niTray.Icon")));
 			this.niTray.Text = "Hydra Paper";
 			this.niTray.Visible = true;
+			this.niTray.Click += new System.EventHandler(this.niTray_Click);
 			this.niTray.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.niTray_MouseDoubleClick);
 			// 
 			// cmsTray
@@ -195,7 +198,7 @@
 			// numRotateMinutes
 			// 
 			this.numRotateMinutes.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-			this.numRotateMinutes.Location = new System.Drawing.Point(288, 194);
+			this.numRotateMinutes.Location = new System.Drawing.Point(288, 248);
 			this.numRotateMinutes.Minimum = new decimal(new int[] {
             1,
             0,
@@ -229,7 +232,7 @@
 			// btnChangeNow
 			// 
 			this.btnChangeNow.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.btnChangeNow.Location = new System.Drawing.Point(93, 191);
+			this.btnChangeNow.Location = new System.Drawing.Point(93, 245);
 			this.btnChangeNow.Name = "btnChangeNow";
 			this.btnChangeNow.Size = new System.Drawing.Size(81, 23);
 			this.btnChangeNow.TabIndex = 8;
@@ -241,7 +244,7 @@
 			// 
 			this.lblWorking.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
 			this.lblWorking.AutoSize = true;
-			this.lblWorking.Location = new System.Drawing.Point(352, 196);
+			this.lblWorking.Location = new System.Drawing.Point(352, 250);
 			this.lblWorking.Name = "lblWorking";
 			this.lblWorking.Size = new System.Drawing.Size(56, 13);
 			this.lblWorking.TabIndex = 10;
@@ -333,19 +336,38 @@
 			this.btnMSIImageFolderChooser.UseVisualStyleBackColor = true;
 			this.btnMSIImageFolderChooser.Click += new System.EventHandler(this.btnMSIImageFolderChooser_Click);
 			// 
+			// lblImagesUsed
+			// 
+			this.lblImagesUsed.AutoSize = true;
+			this.lblImagesUsed.Location = new System.Drawing.Point(42, 199);
+			this.lblImagesUsed.Name = "lblImagesUsed";
+			this.lblImagesUsed.Size = new System.Drawing.Size(72, 13);
+			this.lblImagesUsed.TabIndex = 3;
+			this.lblImagesUsed.Text = "Images Used:";
+			// 
+			// txtImagesUsed
+			// 
+			this.txtImagesUsed.Location = new System.Drawing.Point(135, 196);
+			this.txtImagesUsed.Name = "txtImagesUsed";
+			this.txtImagesUsed.ReadOnly = true;
+			this.txtImagesUsed.Size = new System.Drawing.Size(400, 20);
+			this.txtImagesUsed.TabIndex = 11;
+			// 
 			// frmMain
 			// 
 			this.AcceptButton = this.btnStart;
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.CancelButton = this.btnExit;
-			this.ClientSize = new System.Drawing.Size(547, 226);
+			this.ClientSize = new System.Drawing.Size(547, 280);
+			this.Controls.Add(this.txtImagesUsed);
 			this.Controls.Add(this.lblWorking);
 			this.Controls.Add(this.btnSSIImageFolderChooser);
 			this.Controls.Add(this.btnMSIImageFolderChooser);
 			this.Controls.Add(this.cmbSSIImageSize);
 			this.Controls.Add(this.cmbMSIImageSize);
 			this.Controls.Add(this.lblSSIResizeMethod);
+			this.Controls.Add(this.lblImagesUsed);
 			this.Controls.Add(this.lblMSIResizeMethod);
 			this.Controls.Add(this.btnChangeNow);
 			this.Controls.Add(this.btnExit);
@@ -359,7 +381,6 @@
 			this.Controls.Add(this.lblMSIFolder);
 			this.Controls.Add(this.lblSSIFolder);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.MaximizeBox = false;
 			this.Name = "frmMain";
 			this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
@@ -405,6 +426,8 @@
 		private System.Windows.Forms.ToolStripMenuItem statusToolStripMenuItem;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
 		private System.Windows.Forms.ToolStripMenuItem nextToolStripMenuItem;
+		private System.Windows.Forms.Label lblImagesUsed;
+		private System.Windows.Forms.TextBox txtImagesUsed;
 	}
 }
 

@@ -12,12 +12,16 @@ namespace HydraPaper
 			this.Files = new List<FileProperties>();
 			this.Randomizer = new Random();
 			this.RefreshFilesList = false;
+
+			this.FileNamesUsed = new List<string>();
 		}
 	
 		public List<FileProperties> Files { get; set; }
 		public Properties.Settings Settings { get; set; }
 		public Random Randomizer { get; set; }
+		
 		public bool RefreshFilesList { get; set; }
+		public List<string> FileNamesUsed { get; set; }
 
 	}
 

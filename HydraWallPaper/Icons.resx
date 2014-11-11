@@ -124,6 +124,9 @@
   <data name="HydraIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\HydraIcon.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="HydraIconForm" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>resources\hydraiconform.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="HydraStoppedIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\HydraStoppedIcon.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>

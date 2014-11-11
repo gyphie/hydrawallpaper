@@ -13,6 +13,8 @@ namespace HydraPaper
 	{
 		public static void BuildWallPaper(JobArguments settings)
 		{
+			settings.FileNamesUsed.Clear();
+			
 			if (settings.RefreshFilesList)
 			{
 				settings.Files.Clear();
@@ -118,6 +120,8 @@ namespace HydraPaper
 			{
 				return string.Empty;
 			}
+
+			settings.FileNamesUsed.Add(file.Filename);
 
 			// Determine the size of the wall paper (bounds of all the screens)
 			int left = 0, right = 0, top = 0, bottom = 0;
@@ -314,6 +318,8 @@ namespace HydraPaper
 							// There are no files to make a background with so just return
 							return string.Empty;
 						}
+
+						settings.FileNamesUsed.Add(file.Filename);
 
 						try
 						{

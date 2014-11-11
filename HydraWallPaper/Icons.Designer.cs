@@ -83,6 +83,16 @@ namespace HydraPaper {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
+        public static System.Drawing.Icon HydraIconForm {
+            get {
+                object obj = ResourceManager.GetObject("HydraIconForm", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
         public static System.Drawing.Icon HydraStoppedIcon {
             get {
                 object obj = ResourceManager.GetObject("HydraStoppedIcon", resourceCulture);

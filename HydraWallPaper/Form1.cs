@@ -17,7 +17,7 @@ namespace HydraPaper
 		private VistaFolderBrowserDialog dlgVistaFolder;
 		private JobArguments jobArguments;
 		private System.Timers.Timer timDisplaySettingsChanged;
-		private System.Timers.Timer timRotate;
+		private HPTimer timRotate;
 		private ApplicationStatus AppStatus = ApplicationStatus.None;
 		private AsyncOperation asyncOp;
 
@@ -40,6 +40,8 @@ namespace HydraPaper
 
 		private void SetupControls()
 		{
+			this.Icon = Icons.HydraIconForm;
+			
 			// Manually build the item list to match the enum
 			this.cmbSSIImageSize.Items.Clear();
 			this.cmbMSIImageSize.Items.Clear();
@@ -63,9 +65,8 @@ namespace HydraPaper
 	
 			this.cmbMSIImageSize.DataSource = behaviors;
 
-			this.timRotate = new System.Timers.Timer(60000);	// Timer with a default of 1 minute
-			this.timRotate.Elapsed += timRotate_Elapsed;
-			this.timRotate.AutoReset = true;
+			this.timRotate = new HPTimer(60000);	// Timer with a default of 1 minute
+			this.timRotate.Elapsed = timRotate_Elapsed;
 
 			this.timDisplaySettingsChanged = new System.Timers.Timer(3000);
 			this.timDisplaySettingsChanged.Elapsed += displayTimer_Elapsed;
@@ -244,12 +245,15 @@ namespace HydraPaper
 
 		private void bwWallPaper_DoWork(object sender, DoWorkEventArgs e)
 		{
-			WallPaperBuilder.BuildWallPaper(e.Argument as JobArguments);
+			JobArguments settings = e.Argument as JobArguments;
+			
+			WallPaperBuilder.BuildWallPaper(settings);
 		}
 
 		private void bwWallPaper_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
 		{
 			this.lblWorking.Visible = false;
+			this.txtImagesUsed.Text = string.Join(", ", this.jobArguments.FileNamesUsed);
 		}
 
 		private void btnStart_Click(object sender, EventArgs e)
@@ -342,7 +346,16 @@ namespace HydraPaper
 					break;
 			}
 
-			statusText += this.timRotate.Enabled ? " - Running" : " - Paused";
+			if (this.timRotate.Enabled)
+			{
+				var timeRemaining = new TimeSpan(0, 0, 0, 0, Convert.ToInt32(this.timRotate.MillisecondsRemaining));
+				
+				statusText += string.Format(" - Running - next in {0}m {1}s", timeRemaining.Minutes, timeRemaining.Seconds);
+			}
+			else
+			{
+				statusText += " - Paused";
+			}
 			
 			this.statusToolStripMenuItem.Text = statusText;
 			this.pauseStripMenuItem.Text = this.timRotate.Enabled ? "Stop" : "Start";
@@ -372,6 +385,11 @@ namespace HydraPaper
 			this.timRotate.Interval = Math.Max(Convert.ToInt32(this.numRotateMinutes.Value * 60000), 60000);
 			this.timRotate.Start();
 			this.niTray.Icon = Icons.HydraIcon;
+		}
+
+		private void niTray_Click(object sender, EventArgs e)
+		{
+			nextToolStripMenuItem_Click(null, null);
 		}
 	}
 }

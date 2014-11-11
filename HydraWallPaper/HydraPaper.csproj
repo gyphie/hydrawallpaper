@@ -52,7 +52,7 @@
     <UseVSHostingProcess>true</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Resources\HydraIcon.ico</ApplicationIcon>
+    <ApplicationIcon>Resources\HydraIconForm.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject />
@@ -97,6 +97,7 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="HPTimer.cs" />
     <Compile Include="Icons.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -123,12 +124,12 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\HydraIconForm.ico" />
     <EmbeddedResource Include="Resources\HydraIcon.ico" />
     <EmbeddedResource Include="Resources\HydraStoppedIcon.ico" />
     <EmbeddedResource Include="Resources\HydraBlankIcon.ico" />
     <Content Include="Assets\Ookii.Dialogs.dll" />
     <Content Include="Assets\Ookoo.Dialogs.dll license.txt" />
-    <Content Include="Assets\Screen.bmp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CSSetDesktopWallpaper\CSSetDesktopWallpaper.csproj">
