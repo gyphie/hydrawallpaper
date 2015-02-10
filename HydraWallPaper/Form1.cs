@@ -18,9 +18,11 @@ namespace HydraPaper
 		private JobArguments jobArguments;
 		private System.Timers.Timer timDisplaySettingsChanged;
 		private System.Windows.Forms.Timer timCMSStatus;
+		private System.Windows.Forms.Timer timTraySingleClick;
 		private HPTimer timRotate;
 		private ApplicationStatus AppStatus = ApplicationStatus.None;
 		private AsyncOperation asyncOp;
+		private bool previousAeroState = false;
 
 		public frmMain()
 		{
@@ -31,6 +33,9 @@ namespace HydraPaper
 			this.dlgVistaFolder = new VistaFolderBrowserDialog();
 			this.jobArguments = new JobArguments();
 			this.AppStatus = System.Windows.Forms.SystemInformation.TerminalServerSession ? ApplicationStatus.Remote : ApplicationStatus.Desktop;
+			this.previousAeroState = AeroCheck.AeroEnabled;
+
+			Program.DebugMessage("Starting with Aero: " + (this.previousAeroState ? "true" : "false"));
 
 			this.SetupControls();
 			this.LoadSettings();
@@ -76,7 +81,11 @@ namespace HydraPaper
 			this.timCMSStatus = new System.Windows.Forms.Timer();
 			this.timCMSStatus.Interval = 1000;
 			this.timCMSStatus.Tick += timCMSStatus_Elapsed;
-			this.timDisplaySettingsChanged.AutoReset = true;
+
+			this.timTraySingleClick = new System.Windows.Forms.Timer();
+			this.timTraySingleClick.Interval = SystemInformation.DoubleClickTime + 100;
+			this.timTraySingleClick.Tick += timTraySingleClick_Elapsed;
+			
 
 			this.asyncOp = AsyncOperationManager.CreateOperation(null);
 
@@ -209,10 +218,32 @@ namespace HydraPaper
 		{
 			this.asyncOp.Post((state) =>
 			{
-				this.stopRotateTimer(false);
-				this.UpdateWallPaper();
-				this.startRotateTimer();
-				Program.DebugMessage("Started rotate timer");
+				// Detect if the change was to a low graphics mode which indicates a video game or remote session (VNC) and we should suspend the timer
+				if (this.AppStatus == ApplicationStatus.Desktop)
+				{
+					if (this.previousAeroState != AeroCheck.AeroEnabled)
+					{
+						this.previousAeroState = AeroCheck.AeroEnabled;
+
+						if (!this.previousAeroState)
+						{
+							Program.DebugMessage("Detected low graphics change.");
+							this.AppStatus = ApplicationStatus.Remote;
+							this.timDisplaySettingsChanged.Stop();
+							this.stopRotateTimer(true);
+							this.SaveSettings();
+							this.blankToolStripMenuItem_Click(null, null);
+							return;
+						}
+					}
+		
+					// Aero didn't change (some other display property changed) or aero was enabled so go ahead and rotate the wallpaper so it is updated to match the new 
+					// display settings
+					this.stopRotateTimer(false);
+					this.UpdateWallPaper();
+					this.startRotateTimer();
+					Program.DebugMessage("Started rotate timer");
+				}
 			}, null);
 		}
 
@@ -295,6 +326,7 @@ namespace HydraPaper
 		{
 			if (e.Button == System.Windows.Forms.MouseButtons.Left)
 			{
+				this.timTraySingleClick.Stop();	// Prevent the two single clicks from triggering
 				this.openToolStripMenuItem_Click(null, null);
 			}
 		}
@@ -400,7 +432,7 @@ namespace HydraPaper
 		{
 			if (e.Button == System.Windows.Forms.MouseButtons.Left)
 			{
-				nextToolStripMenuItem_Click(null, null);
+				timTraySingleClick.Start();
 			}
 		}
 
@@ -420,6 +452,12 @@ namespace HydraPaper
 		void timCMSStatus_Elapsed(object sender, System.EventArgs e)
 		{
 			this.cmsTray_Opening(null, null);
+		}
+
+		void timTraySingleClick_Elapsed(object sender, System.EventArgs e)
+		{
+			timTraySingleClick.Stop();
+			nextToolStripMenuItem_Click(null, null);
 		}
 
 	}
