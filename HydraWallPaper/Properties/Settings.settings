@@ -17,5 +17,8 @@
     <Setting Name="MultiScreenImageBehavior" Type="Common.ImageBehavior" Scope="User">
       <Value Profile="(Default)">TouchOutside</Value>
     </Setting>
+    <Setting Name="UpgradeSettings" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

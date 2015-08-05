@@ -102,6 +102,26 @@ namespace HydraPaper
 
 		public void LoadSettings()
 		{
+			// Check validity of configuration and recover if necessary: http://www.codeproject.com/Articles/30216/Handling-Corrupt-user-config-Settings
+			try
+			{
+				var test = Settings.Default.SingleScreenImagePath;
+			}
+			catch (System.Configuration.ConfigurationErrorsException ex)
+			{
+				string filename = ((System.Configuration.ConfigurationErrorsException)ex.InnerException).Filename;
+				File.Delete(filename);
+				Settings.Default.Reload();
+			}
+
+			if (Settings.Default.UpgradeSettings)
+			{
+				Settings.Default.Upgrade();
+				Settings.Default.Reload();
+				Settings.Default.UpgradeSettings = false;
+				Settings.Default.Save();
+			}
+						
 			this.txtSSIImageFolderPath.Text = Settings.Default.SingleScreenImagePath;
 			this.txtMSIImageFolderPath.Text = Settings.Default.MultiScreenImagePath;
 			this.cmbSSIImageSize.SelectedValue = (int)Settings.Default.SingleScreenImageBehavior;
