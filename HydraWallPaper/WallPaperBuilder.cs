@@ -58,7 +58,7 @@ namespace HydraPaper
 
 		public static void UpdateFileList(List<FileProperties> files, string path, bool isSingleScreen)
 		{
-			System.Diagnostics.Stopwatch.StartNew();
+			var stopWatch = System.Diagnostics.Stopwatch.StartNew();
 
 			List<FileInfo> fis = new List<FileInfo>();
 
@@ -73,27 +73,37 @@ namespace HydraPaper
 					fis.AddRange(new DirectoryInfo(path).GetFiles("*.jpeg", SearchOption.AllDirectories));
 				}
 			}
-			catch (Exception ex) { Program.DebugMessage("Exception in Update FileList: {0}", ex.Message); }
+			catch (Exception ex) { Program.DebugMessage("Exception in Update FileList: {0}", ex.Message); Program.DebugMessage(ex.StackTrace); }
 
 			foreach (FileInfo fileInfo in fis)
 			{
 				files.Add(new FileProperties(fileInfo.FullName, isSingleScreen));
 			}
 
-			Program.DebugMessage("Added {0} {1} files", files.Count.ToString(), isSingleScreen ? "single screen" : "multi screen");
+			Program.DebugMessage($"Added {fis.Count} {(isSingleScreen ? "single screen" : "multi screen")} files");
 
-			Program.DebugMessage("Time to load files: {0}", new TimeSpan(System.Diagnostics.Stopwatch.GetTimestamp()).TotalSeconds.ToString());
+			Program.DebugMessage($"Time to load files: {stopWatch.Elapsed.TotalSeconds}");
 		}
 
 		public static FileProperties GetFile(List<FileProperties> files, bool isSingleScreen, Random randomizer)
 		{
+			var fileClass = isSingleScreen ? "single screen" : "multi screen";
+
 			var unshownFiles = files.Where(f => !f.HasBeenShown && f.IsSingleScreen == isSingleScreen);
-			
-			// If there were no unshown files reset the list and try again
+
+			// If there were no unshown files reset the list before getting a file
 			if (unshownFiles.Count() == 0)
 			{
-				Program.DebugMessage("No unshown {0} files found. Resetting the list.", isSingleScreen ? "single screen" : "multi screen");
-				files.Where(f => f.IsSingleScreen == isSingleScreen).ToList().ForEach(f => f.HasBeenShown = false);
+				Program.DebugMessage($"No unshown {fileClass} files found. Resetting the list.");
+
+				foreach (var file in files)
+				{
+					if (file.IsSingleScreen == isSingleScreen)
+					{
+						file.HasBeenShown = false;
+					}
+				}
+
 				unshownFiles = files.Where(f => !f.HasBeenShown && f.IsSingleScreen == isSingleScreen);
 			}
 
@@ -102,11 +112,11 @@ namespace HydraPaper
 			if (selectedFile != null)
 			{
 				selectedFile.HasBeenShown = true;
-				Program.DebugMessage("Selected file {0} for {1}", selectedFile.Filename, isSingleScreen ? "single screen" : "multi screen");
+				Program.DebugMessage($"Selected file {selectedFile.Filename} for {fileClass}");
 			}
 			else
 			{
-				Program.DebugMessage("No {0} file found", isSingleScreen ? "single screen" : "multi screen");
+				Program.DebugMessage($"No {fileClass} file found");
 			}
 
 			return selectedFile;
@@ -218,6 +228,7 @@ namespace HydraPaper
 					catch (Exception ex)
 					{
 						Program.DebugMessage("Exception in BuildMultiScreenWallPaper: {0}", ex.Message);
+						Program.DebugMessage(ex.StackTrace);
 					}
 
 					//img.Save("c:\\stage1.jpg", System.Drawing.Imaging.ImageFormat.Jpeg);
@@ -377,6 +388,7 @@ namespace HydraPaper
 						catch (Exception ex)
 						{
 							Program.DebugMessage("Exception in BuildSingleScreenWallPaper: {0}", ex.Message);
+							Program.DebugMessage(ex.StackTrace);
 							continue;
 						}
 					}

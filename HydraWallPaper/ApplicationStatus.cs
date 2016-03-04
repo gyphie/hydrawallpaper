@@ -1,11 +1,25 @@
 ﻿
 namespace Common
 {
-	public enum ApplicationStatus
+	public enum ApplicationStates
 	{
-		None,
-		Desktop,
+		RotateWallpaper,
 		Remote,
-		Locked
+		Locked,
+		Paused,
+		Blanked,
+		Configuration
 	}
+	public enum StateCommands
+	{
+		StartRotation,
+		ShowNext,
+		Configure,
+		Remote,
+		Lock,
+		Pause,
+		Blank,
+		DisplayChange
+	}
+
 }

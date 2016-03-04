@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydraPaper", "HydraWallPaper\HydraPaper.csproj", "{B164BC2F-A6E6-4EB9-B24E-A014F666A21D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSSetDesktopWallpaper", "CSSetDesktopWallpaper\CSSetDesktopWallpaper.csproj", "{849D2CD9-7BB4-4C30-A536-032F392DEA4C}"

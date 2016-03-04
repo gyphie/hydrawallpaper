@@ -43,7 +43,7 @@
 			this.blankToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
 			this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.pauseStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.startStopStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.numRotateMinutes = new System.Windows.Forms.NumericUpDown();
 			this.btnSSIImageFolderChooser = new System.Windows.Forms.Button();
@@ -137,7 +137,7 @@
             this.blankToolStripMenuItem,
             this.toolStripSeparator1,
             this.openToolStripMenuItem,
-            this.pauseStripMenuItem,
+            this.startStopStripMenuItem,
             this.exitToolStripMenuItem});
 			this.cmsTray.Name = "cmsTray";
 			this.cmsTray.Size = new System.Drawing.Size(153, 170);
@@ -146,6 +146,7 @@
 			// 
 			// statusToolStripMenuItem
 			// 
+			this.statusToolStripMenuItem.Enabled = false;
 			this.statusToolStripMenuItem.Name = "statusToolStripMenuItem";
 			this.statusToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
 			this.statusToolStripMenuItem.Text = "Status";
@@ -182,12 +183,12 @@
 			this.openToolStripMenuItem.Text = "Open";
 			this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
 			// 
-			// pauseStripMenuItem
+			// startStopStripMenuItem
 			// 
-			this.pauseStripMenuItem.Name = "pauseStripMenuItem";
-			this.pauseStripMenuItem.Size = new System.Drawing.Size(152, 22);
-			this.pauseStripMenuItem.Text = "Stop";
-			this.pauseStripMenuItem.Click += new System.EventHandler(this.pauseStripMenuItem_Click);
+			this.startStopStripMenuItem.Name = "startStopStripMenuItem";
+			this.startStopStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.startStopStripMenuItem.Text = "Stop";
+			this.startStopStripMenuItem.Click += new System.EventHandler(this.startStopStripMenuItem_Click);
 			// 
 			// exitToolStripMenuItem
 			// 
@@ -422,7 +423,7 @@
 		private System.Windows.Forms.ComboBox cmbMSIImageSize;
 		private System.Windows.Forms.Button btnMSIImageFolderChooser;
 		private System.Windows.Forms.ToolStripMenuItem blankToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem pauseStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem startStopStripMenuItem;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
 		private System.Windows.Forms.ToolStripMenuItem statusToolStripMenuItem;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
