@@ -19,7 +19,8 @@ namespace Common
 		Lock,
 		Pause,
 		Blank,
-		DisplayChange
+		DisplayChange,
+		Exit
 	}
 
 }

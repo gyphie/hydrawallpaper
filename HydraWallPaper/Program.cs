@@ -17,6 +17,7 @@ namespace HydraPaper
 		static bool isDebug = false;
 
 		// Mutex code from : http://stackoverflow.com/questions/229565/what-is-a-good-pattern-for-using-a-global-mutex-in-c/229567
+		// All comments regarding edits are from the original code
 		[STAThread]
 		static void Main(string[] args)
 		{

@@ -133,8 +133,7 @@ namespace HydraPaper
 
 		private void btnExit_Click(object sender, EventArgs e)
 		{
-			this.ConfigureForStatus(StateCommands.Pause);
-			Application.Exit();
+			this.ConfigureForStatus(StateCommands.Exit);
 		}
 
 		private void SaveSettings()
@@ -262,10 +261,10 @@ namespace HydraPaper
 		{
 			switch (e.Reason)
 			{
+				case Microsoft.Win32.SessionSwitchReason.SessionLock:
 				case Microsoft.Win32.SessionSwitchReason.RemoteConnect:
 				case Microsoft.Win32.SessionSwitchReason.SessionRemoteControl:
-				case Microsoft.Win32.SessionSwitchReason.SessionLock:
-					Program.DebugMessage($"Detected lock or remote session. Terminal: {SystemInformation.TerminalServerSession}");
+					Program.DebugMessage($"Detected {(SystemInformation.TerminalServerSession ? "remote session" : "workstation lock")}. Terminal: {SystemInformation.TerminalServerSession}");
 					if (SystemInformation.TerminalServerSession)
 					{
 						this.ConfigureForStatus(StateCommands.Remote);
@@ -276,13 +275,15 @@ namespace HydraPaper
 					break;
 				case Microsoft.Win32.SessionSwitchReason.ConsoleConnect:    // triggers after a remote desktop session
 				case Microsoft.Win32.SessionSwitchReason.SessionUnlock:
-					Program.DebugMessage($"Detected remote end or unlock. Terminal: {SystemInformation.TerminalServerSession}");
 					if (SystemInformation.TerminalServerSession)
 					{
+						Program.DebugMessage($"Detected remote end. Terminal: {SystemInformation.TerminalServerSession}");
 						this.ConfigureForStatus(StateCommands.Remote);
 					}
 					else
 					{
+						Program.DebugMessage($"Detected unlock. Terminal: {SystemInformation.TerminalServerSession}");
+						this.ConfigureForStatus(StateCommands.Pause);
 						this.ConfigureForStatus(StateCommands.StartRotation);
 					}
 					break;
@@ -576,6 +577,29 @@ namespace HydraPaper
 				this.formCanBeVisible = true;
 				this.Show();
 				this.WindowState = FormWindowState.Normal;
+			}
+			else if (command == StateCommands.Exit)
+			{
+				try
+				{
+					Program.DebugMessage("Command: Exit");
+
+					this.AppState = ApplicationStates.Paused;
+
+					this.startStopStripMenuItem.Text = "Start";
+
+					this.timDisplaySettingsChanged.Stop();
+					this.timRotate.Stop();
+					this.timTraySingleClick.Stop();
+					this.niTray.Icon = Icons.HydraStoppedIcon;
+					this.niTray.Text = this.GetStatusMessage();
+
+					this.SaveSettings();
+				}
+				catch { }
+
+				Application.Exit();
+				return;
 			}
 
 
