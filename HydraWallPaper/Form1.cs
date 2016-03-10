@@ -136,6 +136,7 @@ namespace HydraPaper
 			this.numRotateMinutes.Value = Math.Min(this.numRotateMinutes.Maximum, Math.Max(this.numRotateMinutes.Minimum, Settings.Default.ChangeInterval));
 
 			this.jobArguments.Settings = Settings.Default;
+			this.jobArguments.RefreshFilesList = true;
 		}
 
 		private void btnExit_Click(object sender, EventArgs e)
