@@ -39,8 +39,14 @@ namespace HydraPaper
 			this.SetupControls();
 			this.LoadSettings();
 
-			this.btnStart_Click(null, null);
-
+			if (SystemInformation.TerminalServerSession)
+			{
+				this.ConfigureForStatus(StateCommands.Remote);
+			}
+			else
+			{
+				this.ConfigureForStatus(StateCommands.StartRotation);
+			}
 		}
 
 		private void SetupControls()
@@ -84,11 +90,12 @@ namespace HydraPaper
 			this.timTraySingleClick = new System.Windows.Forms.Timer();
 			this.timTraySingleClick.Interval = SystemInformation.DoubleClickTime + 100;
 			this.timTraySingleClick.Tick += timTraySingleClick_Elapsed;
-
-
+			
 			this.asyncOp = AsyncOperationManager.CreateOperation(null);
 
 			this.Text += " v" + FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location).ProductVersion;
+
+			this.WindowState = FormWindowState.Minimized;
 		}
 
 		bool formCanBeVisible = false;
