@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -284,9 +284,12 @@ namespace HydraPaper
 			int left = 0, right = 0, top = 0, bottom = 0;
 			int wallPaperWidth = 0, wallPaperHeight = 0;
 
+			List<Rectangle> screenBounds = new List<Rectangle>();
 			foreach (Screen screen in System.Windows.Forms.Screen.AllScreens)
 			{
-				Rectangle bounds = screen.Bounds;
+				Rectangle bounds = ScreenDpi.GetTrueBounds(screen);
+				screenBounds.Add(bounds);
+				//Rectangle bounds = screen.Bounds;
 				if (left > bounds.X) left = bounds.X;
 				if (top > bounds.Y) top = bounds.Y;
 				if (right < (bounds.X + bounds.Width)) right = bounds.X + bounds.Width;
@@ -313,10 +316,8 @@ namespace HydraPaper
 					// Paint the background color of each screens bounds
 					g.Clear(Color.Black);
 
-					foreach (Screen screen in Screen.AllScreens)
+					foreach (var bounds in screenBounds)
 					{
-						Rectangle bounds = screen.Bounds;
-
 						using (Brush b = new SolidBrush(Color.Black))
 						{
 							g.FillRectangle(b, bounds.X + drawOffsetX, bounds.Y + drawOffsetY, bounds.Width, bounds.Height);

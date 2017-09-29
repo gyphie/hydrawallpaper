@@ -1,4 +1,4 @@
-﻿namespace HydraPaper
+namespace HydraPaper
 {
 	partial class frmMain
 	{
@@ -140,7 +140,7 @@
             this.startStopStripMenuItem,
             this.exitToolStripMenuItem});
 			this.cmsTray.Name = "cmsTray";
-			this.cmsTray.Size = new System.Drawing.Size(153, 170);
+			this.cmsTray.Size = new System.Drawing.Size(107, 148);
 			this.cmsTray.Opening += new System.ComponentModel.CancelEventHandler(this.cmsTray_Opening);
 			this.cmsTray.VisibleChanged += new System.EventHandler(this.cmsTray_VisibleChanged);
 			// 
@@ -148,52 +148,52 @@
 			// 
 			this.statusToolStripMenuItem.Enabled = false;
 			this.statusToolStripMenuItem.Name = "statusToolStripMenuItem";
-			this.statusToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.statusToolStripMenuItem.Size = new System.Drawing.Size(106, 22);
 			this.statusToolStripMenuItem.Text = "Status";
 			// 
 			// toolStripSeparator2
 			// 
 			this.toolStripSeparator2.Name = "toolStripSeparator2";
-			this.toolStripSeparator2.Size = new System.Drawing.Size(149, 6);
+			this.toolStripSeparator2.Size = new System.Drawing.Size(103, 6);
 			// 
 			// nextToolStripMenuItem
 			// 
 			this.nextToolStripMenuItem.Name = "nextToolStripMenuItem";
-			this.nextToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.nextToolStripMenuItem.Size = new System.Drawing.Size(106, 22);
 			this.nextToolStripMenuItem.Text = "Next";
 			this.nextToolStripMenuItem.Click += new System.EventHandler(this.nextToolStripMenuItem_Click);
 			// 
 			// blankToolStripMenuItem
 			// 
 			this.blankToolStripMenuItem.Name = "blankToolStripMenuItem";
-			this.blankToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.blankToolStripMenuItem.Size = new System.Drawing.Size(106, 22);
 			this.blankToolStripMenuItem.Text = "Blank";
 			this.blankToolStripMenuItem.Click += new System.EventHandler(this.blankToolStripMenuItem_Click);
 			// 
 			// toolStripSeparator1
 			// 
 			this.toolStripSeparator1.Name = "toolStripSeparator1";
-			this.toolStripSeparator1.Size = new System.Drawing.Size(149, 6);
+			this.toolStripSeparator1.Size = new System.Drawing.Size(103, 6);
 			// 
 			// openToolStripMenuItem
 			// 
 			this.openToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
 			this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-			this.openToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.openToolStripMenuItem.Size = new System.Drawing.Size(106, 22);
 			this.openToolStripMenuItem.Text = "Open";
 			this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
 			// 
 			// startStopStripMenuItem
 			// 
 			this.startStopStripMenuItem.Name = "startStopStripMenuItem";
-			this.startStopStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.startStopStripMenuItem.Size = new System.Drawing.Size(106, 22);
 			this.startStopStripMenuItem.Text = "Stop";
 			this.startStopStripMenuItem.Click += new System.EventHandler(this.startStopStripMenuItem_Click);
 			// 
 			// exitToolStripMenuItem
 			// 
 			this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-			this.exitToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.exitToolStripMenuItem.Size = new System.Drawing.Size(106, 22);
 			this.exitToolStripMenuItem.Text = "E&xit";
 			this.exitToolStripMenuItem.Click += new System.EventHandler(this.btnExit_Click);
 			// 
@@ -358,8 +358,8 @@
 			// frmMain
 			// 
 			this.AcceptButton = this.btnStart;
-			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+			this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
+			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
 			this.CancelButton = this.btnExit;
 			this.ClientSize = new System.Drawing.Size(547, 280);
 			this.Controls.Add(this.txtImagesUsed);
