@@ -139,7 +139,7 @@ namespace HydraPaper
 
 			foreach (Screen screen in System.Windows.Forms.Screen.AllScreens)
 			{
-				Rectangle bounds = screen.Bounds;
+				Rectangle bounds = ScreenDpi.GetTrueBounds(screen);
 				if (left > bounds.X) left = bounds.X;
 				if (top > bounds.Y) top = bounds.Y;
 				if (right < (bounds.X + bounds.Width)) right = bounds.X + bounds.Width;
