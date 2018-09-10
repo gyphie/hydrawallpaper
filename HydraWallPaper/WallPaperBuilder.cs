@@ -14,7 +14,7 @@ namespace HydraPaper
 		public static void BuildWallPaper(JobArguments settings)
 		{
 			settings.FileNamesUsed.Clear();
-			
+
 			if (settings.RefreshFilesList)
 			{
 				settings.Files.Clear();
@@ -43,7 +43,7 @@ namespace HydraPaper
 					wallpaperFileName = BuildSingleScreenWallPaper(settings);
 				}
 			}
-	
+
 			SetWallpaper(wallpaperFileName);
 		}
 
@@ -399,7 +399,7 @@ namespace HydraPaper
 					// Move the blocks that are above and to the left of the primary to adjust for the wallpaper wrapping
 					if (drawOffsetX > 0)
 					{
-						g.DrawImage(img, 
+						g.DrawImage(img,
 							new Rectangle(wallPaperWidth, 0, drawOffsetX, wallPaperHeight),
 							new Rectangle(0, 0, drawOffsetX, wallPaperHeight),
 							GraphicsUnit.Pixel);
@@ -413,7 +413,7 @@ namespace HydraPaper
 
 
 					//img.Save("c:\\stage2.jpg", System.Drawing.Imaging.ImageFormat.Jpeg);
-		
+
 					// Copy the wallpaper section of the completed canvas
 					using (Bitmap imgWallpaper = new Bitmap(wallPaperWidth, wallPaperHeight))
 					{
@@ -503,7 +503,7 @@ namespace HydraPaper
 					newWidth = Convert.ToInt32(Math.Floor((decimal)targetSize.Height / ((decimal)imageFromDisk.Height / (decimal)imageFromDisk.Width)));
 					newHeight = targetSize.Height;
 				}
-				
+
 			}
 
 			return new Size(newWidth, newHeight);
@@ -518,17 +518,21 @@ namespace HydraPaper
 		/// <param name="fileName"></param>
 		private static void RotateImage(Image imageFromDisk, string fileName)
 		{
-			if (fileName.ToLower().EndsWith(".jpg") || fileName.ToLower().EndsWith(".jpeg"))
+			try
 			{
-				Bitmap bmp = (Bitmap)imageFromDisk;
-				EXIFextractor exif = new EXIFextractor(ref bmp, "n");
-				if (exif["Orientation"] != null)
+				if (fileName.ToLower().EndsWith(".jpg") || fileName.ToLower().EndsWith(".jpeg"))
 				{
-					RotateFlipType flipType = OrientationToFlipType(exif["Orientation"]);
-					imageFromDisk.RotateFlip(flipType);
-				}
+					Bitmap bmp = (Bitmap)imageFromDisk;
+					EXIFextractor exif = new EXIFextractor(ref bmp, "n");
+					if (exif["Orientation"] != null)
+					{
+						RotateFlipType flipType = OrientationToFlipType(exif["Orientation"]);
+						imageFromDisk.RotateFlip(flipType);
+					}
 
+				}
 			}
+			catch { }
 		}
 
 		private static RotateFlipType OrientationToFlipType(object orientation)

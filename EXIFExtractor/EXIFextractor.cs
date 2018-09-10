@@ -17,18 +17,18 @@ using System.Web.UI;
 namespace Goheer
 {
 	namespace EXIF
-	{	
+	{
 
 		/// <summary>
 		/// EXIFextractor Class
-		/// 
+		///
 		/// </summary>
 		public class EXIFextractor : IEnumerable
 		{
 			/// <summary>
 			/// Get the individual property value by supplying property name
 			/// These are the valid property names :
-			/// 
+			///
 			/// "Exif IFD"
 			/// "Gps IFD"
 			/// "New Subfile Type"
@@ -270,7 +270,7 @@ namespace Goheer
 			//
 			string sp;
 			/// <summary>
-			/// 
+			///
 			/// </summary>
 			/// <param name="id"></param>
 			/// <param name="len"></param>
@@ -282,7 +282,7 @@ namespace Goheer
 				this.setTag(id,data.Length,0x2,ascii.GetBytes(data));
 			}
 			/// <summary>
-			/// 
+			///
 			/// </summary>
 			/// <param name="id"></param>
 			/// <param name="len"></param>
@@ -291,11 +291,11 @@ namespace Goheer
 			public void setTag(int id, int len, short type, byte [] data)
 			{
 				PropertyItem p = CreatePropertyItem(type,id,len,data);
-				this.bmp.SetPropertyItem( p );				
+				this.bmp.SetPropertyItem( p );
 				buildDB(this.bmp.PropertyItems);
 			}
 			/// <summary>
-			/// 
+			///
 			/// </summary>
 			/// <param name="type"></param>
 			/// <param name="tag"></param>
@@ -303,14 +303,14 @@ namespace Goheer
 			/// <param name="value"></param>
 			/// <returns></returns>
 			private static PropertyItem CreatePropertyItem(short type, int tag, int len, byte[] value)
-			{ 
+			{
 				PropertyItem item;
 
 				// Loads a PropertyItem from a Jpeg image stored in the assembly as a resource.
 				Assembly assembly = Assembly.GetExecutingAssembly();
 				Stream emptyBitmapStream = assembly.GetManifestResourceStream("EXIFextractor.decoy.jpg");
 				System.Drawing.Image empty = System.Drawing.Image.FromStream(emptyBitmapStream);
-				
+
 				item = empty.PropertyItems[0];
 
 				// Copies the data to the property item.
@@ -323,7 +323,7 @@ namespace Goheer
 				return item;
 			}
 			/// <summary>
-			/// 
+			///
 			/// </summary>
 			/// <param name="bmp"></param>
 			/// <param name="sp"></param>
@@ -344,15 +344,15 @@ namespace Goheer
 				this.sp = sp;
 				this.msp = msp;
 				this.bmp = bmp;
-				//				
+				//
 				myHash = new translation();
 				this.buildDB(bmp.PropertyItems);
 
 			}
-			public static PropertyItem[] GetExifProperties(string fileName) 
-			{ 
+			public static PropertyItem[] GetExifProperties(string fileName)
+			{
 				FileStream stream = new FileStream(fileName, FileMode.Open, FileAccess.Read);
-				System.Drawing.Image image = System.Drawing.Image.FromStream(stream, 
+				System.Drawing.Image image = System.Drawing.Image.FromStream(stream,
 								 /* useEmbeddedColorManagement = */ true,
 								 /* validateImageData = */ false);
 					return image.PropertyItems;
@@ -364,13 +364,13 @@ namespace Goheer
 				this.msp = msp;
 
 				myHash = new translation();
-				//				
+				//
 				this.buildDB(GetExifProperties(file));
 
 			}
 
 			/// <summary>
-			/// 
+			///
 			/// </summary>
 			private void buildDB(System.Drawing.Imaging.PropertyItem[] parr)
 			{
@@ -388,22 +388,27 @@ namespace Goheer
 					if( name == null ) continue;
 					//
 					data += name+": ";
+
 					//
+					if (p.Value == null)
+					{
+						v = "";
+					}
 					//1 = BYTE An 8-bit unsigned integer.,
-					if( p.Type == 0x1 )
+					else if( p.Type == 0x1 )
 					{
 						v = p.Value[0].ToString();
 					}
 						//2 = ASCII An 8-bit byte containing one 7-bit ASCII code. The final byte is terminated with NULL.,
 					else if( p.Type == 0x2 )
 					{
-						// string					
+						// string
 						v = ascii.GetString(p.Value);
 					}
 						//3 = SHORT A 16-bit (2 -byte) unsigned integer,
 					else if( p.Type == 0x3 )
 					{
-						// orientation // lookup table					
+						// orientation // lookup table
 						switch( p.Id )
 						{
 							case 0x8827: // ISO
@@ -424,7 +429,7 @@ namespace Goheer
 								}
 							}
 								break;
-							case 0x8822: // aperture 
+							case 0x8822: // aperture
 							switch( convertToInt16U(p.Value) )
 							{
 								case 0: v = "Not defined"; break;
@@ -438,7 +443,7 @@ namespace Goheer
 								case 8: v = "Landscape mode (for landscape photos with the background in focus)"; break;
 								default: v = "reserved"; break;
 							}
-								break; 
+								break;
 							case 0x9207: // metering mode
 							switch( convertToInt16U(p.Value) )
 							{
@@ -485,15 +490,15 @@ namespace Goheer
 							}
 								break;
 							default:
-								v = convertToInt16U(p.Value).ToString();						
+								v = convertToInt16U(p.Value).ToString();
 								break;
 						}
 					}
 						//4 = LONG A 32-bit (4 -byte) unsigned integer,
 					else if( p.Type == 0x4 )
 					{
-						// orientation // lookup table					
-						v = convertToInt32U(p.Value).ToString();						
+						// orientation // lookup table
+						v = convertToInt32U(p.Value).ToString();
 					}
 						//5 = RATIONAL Two LONGs. The first LONG is the numerator and the second LONG expresses the//denominator.,
 					else if( p.Type == 0x5 )
@@ -527,22 +532,22 @@ namespace Goheer
 								v= r.ToString("/");
 								break;
 						}
-						
+
 					}
 						//7 = UNDEFINED An 8-bit byte that can take any value depending on the field definition,
 					else if( p.Type == 0x7 )
-					{					
+					{
 						switch (p.Id )
-						{ 
+						{
 							case 0xA300:
 							{
 								if( p.Value[0] == 3 )
-								{ 
-									v = "DSC"; 
+								{
+									v = "DSC";
 								}
 								else
 								{
-									v = "reserved"; 
+									v = "reserved";
 								}
 								break;
 							}
@@ -553,10 +558,10 @@ namespace Goheer
 									v = "Not a directly photographed image";
 								break;
 							default:
-								v = "-";					
+								v = "-";
 								break;
-						} 
-					}				
+						}
+					}
 						//9 = SLONG A 32-bit (4 -byte) signed integer (2's complement notation),
 					else if( p.Type == 0x9 )
 					{
@@ -566,7 +571,7 @@ namespace Goheer
 						//denominator.
 					else if( p.Type == 0xA )
 					{
-						
+
 						// rational
 						byte []n = new byte[p.Len/2];
 						byte []d = new byte[p.Len/2];
@@ -591,9 +596,13 @@ namespace Goheer
 								break;
 						}
 					}
+
 					// add it to the list
-					if( properties[name] == null )
-						properties.Add(name,v);
+					if (properties[name] == null)
+					{
+						properties.Add(name, v);
+					}
+
 					// cat it too
 					data+= v;
 					data+= this.sp;
@@ -602,7 +611,7 @@ namespace Goheer
 			}
 
 			/// <summary>
-			/// 
+			///
 			/// </summary>
 			/// <returns></returns>
 			public override string ToString()
@@ -610,7 +619,7 @@ namespace Goheer
 				return data;
 			}
 			/// <summary>
-			/// 
+			///
 			/// </summary>
 			/// <param name="arr"></param>
 			/// <returns></returns>
@@ -622,7 +631,7 @@ namespace Goheer
 					return arr[3] << 24 | arr[2] << 16 | arr[1] << 8 | arr[0];
 			}
 			/// <summary>
-			/// 
+			///
 			/// </summary>
 			/// <param name="arr"></param>
 			/// <returns></returns>
@@ -634,7 +643,7 @@ namespace Goheer
 					return arr[1] << 8 | arr[0];
 			}
 			/// <summary>
-			/// 
+			///
 			/// </summary>
 			/// <param name="arr"></param>
 			/// <returns></returns>
@@ -646,7 +655,7 @@ namespace Goheer
 					return Convert.ToUInt32(arr[3] << 24 | arr[2] << 16 | arr[1] << 8 | arr[0]);
 			}
 			/// <summary>
-			/// 
+			///
 			/// </summary>
 			/// <param name="arr"></param>
 			/// <returns></returns>
@@ -670,7 +679,7 @@ namespace Goheer
 
 		//
 		// dont touch this class. its for IEnumerator
-		// 
+		//
 		//
 		class EXIFextractorEnumerator : IEnumerator
 		{
@@ -694,7 +703,7 @@ namespace Goheer
 			public object Current
 			{
 				get
-				{					
+				{
 					return ( new System.Web.UI.Pair(this.index.Key,this.index.Value) );
 				}
 			}
