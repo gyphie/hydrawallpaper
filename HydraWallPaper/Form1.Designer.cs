@@ -60,18 +60,24 @@ namespace HydraPaper
 			this.cmbMSIImageSize = new System.Windows.Forms.ComboBox();
 			this.btnMSIImageFolderChooser = new System.Windows.Forms.Button();
 			this.lblImagesUsed = new System.Windows.Forms.Label();
-			this.txtImagesUsed = new System.Windows.Forms.TextBox();
+			this.lbImagesUsed = new System.Windows.Forms.ListBox();
+			this.cmsImagesUsed = new System.Windows.Forms.ContextMenuStrip(this.components);
+			this.copyFileNameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.copyPathToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.openImageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.openFolderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.cmsTray.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.numRotateMinutes)).BeginInit();
+			this.cmsImagesUsed.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// btnStart
 			// 
 			this.btnStart.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.btnStart.Location = new System.Drawing.Point(12, 245);
+			this.btnStart.Location = new System.Drawing.Point(12, 303);
 			this.btnStart.Name = "btnStart";
 			this.btnStart.Size = new System.Drawing.Size(75, 23);
-			this.btnStart.TabIndex = 7;
+			this.btnStart.TabIndex = 14;
 			this.btnStart.Text = "&Start";
 			this.btnStart.UseVisualStyleBackColor = true;
 			this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
@@ -80,10 +86,10 @@ namespace HydraPaper
 			// 
 			this.btnExit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.btnExit.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-			this.btnExit.Location = new System.Drawing.Point(460, 245);
+			this.btnExit.Location = new System.Drawing.Point(460, 303);
 			this.btnExit.Name = "btnExit";
 			this.btnExit.Size = new System.Drawing.Size(75, 23);
-			this.btnExit.TabIndex = 9;
+			this.btnExit.TabIndex = 19;
 			this.btnExit.Text = "E&xit";
 			this.btnExit.UseVisualStyleBackColor = true;
 			this.btnExit.Click += new System.EventHandler(this.btnExit_Click);
@@ -106,16 +112,16 @@ namespace HydraPaper
 			this.txtSSIImageFolderPath.Name = "txtSSIImageFolderPath";
 			this.txtSSIImageFolderPath.ReadOnly = true;
 			this.txtSSIImageFolderPath.Size = new System.Drawing.Size(355, 20);
-			this.txtSSIImageFolderPath.TabIndex = 1;
+			this.txtSSIImageFolderPath.TabIndex = 2;
 			// 
 			// lblRotateTime
 			// 
 			this.lblRotateTime.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
 			this.lblRotateTime.AutoSize = true;
-			this.lblRotateTime.Location = new System.Drawing.Point(215, 250);
+			this.lblRotateTime.Location = new System.Drawing.Point(215, 308);
 			this.lblRotateTime.Name = "lblRotateTime";
 			this.lblRotateTime.Size = new System.Drawing.Size(67, 13);
-			this.lblRotateTime.TabIndex = 5;
+			this.lblRotateTime.TabIndex = 16;
 			this.lblRotateTime.Text = "&Rotate (min):";
 			// 
 			// niTray
@@ -200,7 +206,7 @@ namespace HydraPaper
 			// numRotateMinutes
 			// 
 			this.numRotateMinutes.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-			this.numRotateMinutes.Location = new System.Drawing.Point(288, 248);
+			this.numRotateMinutes.Location = new System.Drawing.Point(288, 306);
 			this.numRotateMinutes.Minimum = new decimal(new int[] {
             1,
             0,
@@ -208,7 +214,7 @@ namespace HydraPaper
             0});
 			this.numRotateMinutes.Name = "numRotateMinutes";
 			this.numRotateMinutes.Size = new System.Drawing.Size(58, 20);
-			this.numRotateMinutes.TabIndex = 6;
+			this.numRotateMinutes.TabIndex = 17;
 			this.numRotateMinutes.Value = new decimal(new int[] {
             10,
             0,
@@ -221,7 +227,7 @@ namespace HydraPaper
 			this.btnSSIImageFolderChooser.Location = new System.Drawing.Point(497, 36);
 			this.btnSSIImageFolderChooser.Name = "btnSSIImageFolderChooser";
 			this.btnSSIImageFolderChooser.Size = new System.Drawing.Size(38, 20);
-			this.btnSSIImageFolderChooser.TabIndex = 2;
+			this.btnSSIImageFolderChooser.TabIndex = 3;
 			this.btnSSIImageFolderChooser.Text = "...";
 			this.btnSSIImageFolderChooser.UseVisualStyleBackColor = true;
 			this.btnSSIImageFolderChooser.Click += new System.EventHandler(this.btnSSIImageFolderChooser_Click);
@@ -234,10 +240,10 @@ namespace HydraPaper
 			// btnChangeNow
 			// 
 			this.btnChangeNow.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.btnChangeNow.Location = new System.Drawing.Point(93, 245);
+			this.btnChangeNow.Location = new System.Drawing.Point(93, 303);
 			this.btnChangeNow.Name = "btnChangeNow";
 			this.btnChangeNow.Size = new System.Drawing.Size(81, 23);
-			this.btnChangeNow.TabIndex = 8;
+			this.btnChangeNow.TabIndex = 15;
 			this.btnChangeNow.Text = "&Change Now";
 			this.btnChangeNow.UseVisualStyleBackColor = true;
 			this.btnChangeNow.Click += new System.EventHandler(this.btnChangeNow_Click);
@@ -246,10 +252,10 @@ namespace HydraPaper
 			// 
 			this.lblWorking.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
 			this.lblWorking.AutoSize = true;
-			this.lblWorking.Location = new System.Drawing.Point(352, 250);
+			this.lblWorking.Location = new System.Drawing.Point(352, 308);
 			this.lblWorking.Name = "lblWorking";
 			this.lblWorking.Size = new System.Drawing.Size(56, 13);
-			this.lblWorking.TabIndex = 10;
+			this.lblWorking.TabIndex = 18;
 			this.lblWorking.Text = "Working...";
 			this.lblWorking.Visible = false;
 			// 
@@ -260,7 +266,7 @@ namespace HydraPaper
 			this.cmbSSIImageSize.Location = new System.Drawing.Point(136, 63);
 			this.cmbSSIImageSize.Name = "cmbSSIImageSize";
 			this.cmbSSIImageSize.Size = new System.Drawing.Size(99, 21);
-			this.cmbSSIImageSize.TabIndex = 4;
+			this.cmbSSIImageSize.TabIndex = 5;
 			// 
 			// lblSSIResizeMethod
 			// 
@@ -268,7 +274,7 @@ namespace HydraPaper
 			this.lblSSIResizeMethod.Location = new System.Drawing.Point(42, 66);
 			this.lblSSIResizeMethod.Name = "lblSSIResizeMethod";
 			this.lblSSIResizeMethod.Size = new System.Drawing.Size(81, 13);
-			this.lblSSIResizeMethod.TabIndex = 3;
+			this.lblSSIResizeMethod.TabIndex = 4;
 			this.lblSSIResizeMethod.Text = "&Resize Method:";
 			// 
 			// lblSSIFolder
@@ -277,7 +283,7 @@ namespace HydraPaper
 			this.lblSSIFolder.Location = new System.Drawing.Point(84, 40);
 			this.lblSSIFolder.Name = "lblSSIFolder";
 			this.lblSSIFolder.Size = new System.Drawing.Size(39, 13);
-			this.lblSSIFolder.TabIndex = 0;
+			this.lblSSIFolder.TabIndex = 1;
 			this.lblSSIFolder.Text = "&Folder:";
 			// 
 			// lblMSIFolder
@@ -286,7 +292,7 @@ namespace HydraPaper
 			this.lblMSIFolder.Location = new System.Drawing.Point(84, 125);
 			this.lblMSIFolder.Name = "lblMSIFolder";
 			this.lblMSIFolder.Size = new System.Drawing.Size(39, 13);
-			this.lblMSIFolder.TabIndex = 0;
+			this.lblMSIFolder.TabIndex = 7;
 			this.lblMSIFolder.Text = "F&older:";
 			// 
 			// lblMultiScreenImages
@@ -296,7 +302,7 @@ namespace HydraPaper
 			this.lblMultiScreenImages.Location = new System.Drawing.Point(17, 94);
 			this.lblMultiScreenImages.Name = "lblMultiScreenImages";
 			this.lblMultiScreenImages.Size = new System.Drawing.Size(122, 13);
-			this.lblMultiScreenImages.TabIndex = 0;
+			this.lblMultiScreenImages.TabIndex = 6;
 			this.lblMultiScreenImages.Text = "Multi-Screen Images";
 			// 
 			// txtMSIImageFolderPath
@@ -307,7 +313,7 @@ namespace HydraPaper
 			this.txtMSIImageFolderPath.Name = "txtMSIImageFolderPath";
 			this.txtMSIImageFolderPath.ReadOnly = true;
 			this.txtMSIImageFolderPath.Size = new System.Drawing.Size(355, 20);
-			this.txtMSIImageFolderPath.TabIndex = 1;
+			this.txtMSIImageFolderPath.TabIndex = 8;
 			// 
 			// lblMSIResizeMethod
 			// 
@@ -315,7 +321,7 @@ namespace HydraPaper
 			this.lblMSIResizeMethod.Location = new System.Drawing.Point(42, 151);
 			this.lblMSIResizeMethod.Name = "lblMSIResizeMethod";
 			this.lblMSIResizeMethod.Size = new System.Drawing.Size(81, 13);
-			this.lblMSIResizeMethod.TabIndex = 3;
+			this.lblMSIResizeMethod.TabIndex = 10;
 			this.lblMSIResizeMethod.Text = "R&esize Method:";
 			// 
 			// cmbMSIImageSize
@@ -325,7 +331,7 @@ namespace HydraPaper
 			this.cmbMSIImageSize.Location = new System.Drawing.Point(136, 148);
 			this.cmbMSIImageSize.Name = "cmbMSIImageSize";
 			this.cmbMSIImageSize.Size = new System.Drawing.Size(99, 21);
-			this.cmbMSIImageSize.TabIndex = 4;
+			this.cmbMSIImageSize.TabIndex = 11;
 			// 
 			// btnMSIImageFolderChooser
 			// 
@@ -333,7 +339,7 @@ namespace HydraPaper
 			this.btnMSIImageFolderChooser.Location = new System.Drawing.Point(497, 121);
 			this.btnMSIImageFolderChooser.Name = "btnMSIImageFolderChooser";
 			this.btnMSIImageFolderChooser.Size = new System.Drawing.Size(38, 20);
-			this.btnMSIImageFolderChooser.TabIndex = 2;
+			this.btnMSIImageFolderChooser.TabIndex = 9;
 			this.btnMSIImageFolderChooser.Text = "...";
 			this.btnMSIImageFolderChooser.UseVisualStyleBackColor = true;
 			this.btnMSIImageFolderChooser.Click += new System.EventHandler(this.btnMSIImageFolderChooser_Click);
@@ -341,28 +347,75 @@ namespace HydraPaper
 			// lblImagesUsed
 			// 
 			this.lblImagesUsed.AutoSize = true;
-			this.lblImagesUsed.Location = new System.Drawing.Point(42, 199);
+			this.lblImagesUsed.Location = new System.Drawing.Point(51, 199);
 			this.lblImagesUsed.Name = "lblImagesUsed";
 			this.lblImagesUsed.Size = new System.Drawing.Size(72, 13);
-			this.lblImagesUsed.TabIndex = 3;
+			this.lblImagesUsed.TabIndex = 12;
 			this.lblImagesUsed.Text = "Images Used:";
 			// 
-			// txtImagesUsed
+			// lbImagesUsed
 			// 
-			this.txtImagesUsed.Location = new System.Drawing.Point(135, 196);
-			this.txtImagesUsed.Name = "txtImagesUsed";
-			this.txtImagesUsed.ReadOnly = true;
-			this.txtImagesUsed.Size = new System.Drawing.Size(400, 20);
-			this.txtImagesUsed.TabIndex = 11;
+			this.lbImagesUsed.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.lbImagesUsed.BackColor = System.Drawing.SystemColors.Control;
+			this.lbImagesUsed.ContextMenuStrip = this.cmsImagesUsed;
+			this.lbImagesUsed.FormattingEnabled = true;
+			this.lbImagesUsed.IntegralHeight = false;
+			this.lbImagesUsed.Location = new System.Drawing.Point(136, 199);
+			this.lbImagesUsed.Name = "lbImagesUsed";
+			this.lbImagesUsed.Size = new System.Drawing.Size(399, 91);
+			this.lbImagesUsed.TabIndex = 13;
+			this.lbImagesUsed.DoubleClick += new System.EventHandler(this.lbImagesUsed_DoubleClick);
+			this.lbImagesUsed.KeyUp += new System.Windows.Forms.KeyEventHandler(this.lbImagesUsed_KeyUp);
+			this.lbImagesUsed.MouseDown += new System.Windows.Forms.MouseEventHandler(this.lbImagesUsed_MouseDown);
+			// 
+			// cmsImagesUsed
+			// 
+			this.cmsImagesUsed.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.copyFileNameToolStripMenuItem,
+            this.copyPathToolStripMenuItem,
+            this.openImageToolStripMenuItem,
+            this.openFolderToolStripMenuItem});
+			this.cmsImagesUsed.Name = "cmsImagesUsed";
+			this.cmsImagesUsed.Size = new System.Drawing.Size(166, 92);
+			this.cmsImagesUsed.Opening += new System.ComponentModel.CancelEventHandler(this.cmsImagesUsed_Opening);
+			// 
+			// copyFileNameToolStripMenuItem
+			// 
+			this.copyFileNameToolStripMenuItem.Name = "copyFileNameToolStripMenuItem";
+			this.copyFileNameToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
+			this.copyFileNameToolStripMenuItem.Text = "&Copy File Path";
+			this.copyFileNameToolStripMenuItem.Click += new System.EventHandler(this.copyFileNameToolStripMenuItem_Click);
+			// 
+			// copyPathToolStripMenuItem
+			// 
+			this.copyPathToolStripMenuItem.Name = "copyPathToolStripMenuItem";
+			this.copyPathToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
+			this.copyPathToolStripMenuItem.Text = "Copy Folder &Path";
+			this.copyPathToolStripMenuItem.Click += new System.EventHandler(this.copyPathToolStripMenuItem_Click);
+			// 
+			// openImageToolStripMenuItem
+			// 
+			this.openImageToolStripMenuItem.Name = "openImageToolStripMenuItem";
+			this.openImageToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
+			this.openImageToolStripMenuItem.Text = "&Open Image";
+			this.openImageToolStripMenuItem.Click += new System.EventHandler(this.openImageToolStripMenuItem_Click);
+			// 
+			// openFolderToolStripMenuItem
+			// 
+			this.openFolderToolStripMenuItem.Name = "openFolderToolStripMenuItem";
+			this.openFolderToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
+			this.openFolderToolStripMenuItem.Text = "Open &Folder";
+			this.openFolderToolStripMenuItem.Click += new System.EventHandler(this.openFolderToolStripMenuItem_Click);
 			// 
 			// frmMain
 			// 
-			this.AcceptButton = this.btnStart;
 			this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
 			this.CancelButton = this.btnExit;
-			this.ClientSize = new System.Drawing.Size(547, 280);
-			this.Controls.Add(this.txtImagesUsed);
+			this.ClientSize = new System.Drawing.Size(547, 338);
+			this.Controls.Add(this.lbImagesUsed);
 			this.Controls.Add(this.lblWorking);
 			this.Controls.Add(this.btnSSIImageFolderChooser);
 			this.Controls.Add(this.btnMSIImageFolderChooser);
@@ -392,6 +445,7 @@ namespace HydraPaper
 			this.Resize += new System.EventHandler(this.frmMain_Resize);
 			this.cmsTray.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.numRotateMinutes)).EndInit();
+			this.cmsImagesUsed.ResumeLayout(false);
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -429,7 +483,12 @@ namespace HydraPaper
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
 		private System.Windows.Forms.ToolStripMenuItem nextToolStripMenuItem;
 		private System.Windows.Forms.Label lblImagesUsed;
-		private System.Windows.Forms.TextBox txtImagesUsed;
+		private System.Windows.Forms.ListBox lbImagesUsed;
+		private System.Windows.Forms.ContextMenuStrip cmsImagesUsed;
+		private System.Windows.Forms.ToolStripMenuItem copyFileNameToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem copyPathToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem openFolderToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem openImageToolStripMenuItem;
 	}
 }
 

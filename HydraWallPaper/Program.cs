@@ -11,8 +11,26 @@ namespace HydraPaper
 {
 	static class Program
 	{
-		[DllImport("Kernel32.dll")]
+		private const UInt32 StdOutputHandle = 0xFFFFFFF5;
+
+		[DllImport("kernel32.dll", SetLastError = true)]
+		private static extern bool AttachConsole(int dwProcessId);
+		[DllImport("Kernel32.dll", SetLastError = true)]
 		static extern Boolean AllocConsole();
+		[DllImport("Kernel32.dll", SetLastError = true)]
+		static extern Boolean FreeConsole();
+		[DllImport("kernel32.dll", SetLastError = true)]
+		private static extern IntPtr GetStdHandle(UInt32 nStdHandle);
+		[DllImport("kernel32.dll", SetLastError = true)]
+		private static extern void SetStdHandle(UInt32 nStdHandle, IntPtr handle);
+
+		[DllImport("kernel32.dll", SetLastError = true)]
+		private static extern IntPtr CreateFile(string lpFileName, uint dwDesiredAccess, uint dwShareMode, uint lpSecurityAttributes, uint dwCreationDisposition, uint dwFlagsAndAttributes, uint hTemplateFile);
+
+		private const int MY_CODE_PAGE = 437;
+		private const uint GENERIC_WRITE = 0x40000000;
+		private const uint FILE_SHARE_WRITE = 0x2;
+		private const uint OPEN_EXISTING = 0x3;
 
 		static bool isDebug = false;
 
@@ -57,7 +75,9 @@ namespace HydraPaper
 						hasHandle = mutex.WaitOne(5000, false);
 						if (hasHandle == false)
 						{
-							throw new TimeoutException("Timeout waiting for exclusive access to mutex");
+							//throw new TimeoutException("Timeout waiting for exclusive access to mutex");
+							MessageBox.Show("Another instance of Hydrapaper is already running.");
+							return;
 						}
 					}
 					catch (AbandonedMutexException)
@@ -66,12 +86,13 @@ namespace HydraPaper
 						hasHandle = true;
 					}
 
-					#region Perform Your Work Here
+#region Perform Your Work Here
+					bool alloccedConsole = false;
 					try
 					{
 						if (isDebug)
 						{
-							AllocConsole();
+							alloccedConsole = CreateConsole();
 						}
 					}
 					catch { }
@@ -100,8 +121,9 @@ namespace HydraPaper
 						{
 							mainForm.CleanEvents();
 						}
+						if (alloccedConsole) FreeConsole();
 					}
-					#endregion
+#endregion
 				}
 				finally
 				{
@@ -112,6 +134,34 @@ namespace HydraPaper
 					}
 				}
 			}
+		}
+
+		// https://stackoverflow.com/a/15960495/5583585
+		private static bool CreateConsole()
+		{
+			bool alloccedConsole = false;
+			if (!AttachConsole(-1))
+			{
+				alloccedConsole = true;
+				AllocConsole();
+			}
+
+			// stdout's handle seems to always be equal to 7
+			IntPtr defaultStdout = CreateFile("CONOUT$", GENERIC_WRITE, FILE_SHARE_WRITE, 0, OPEN_EXISTING, 0, 0); //https://stackoverflow.com/a/57517624/5583585
+			IntPtr currentStdout = GetStdHandle(StdOutputHandle);
+
+			if (currentStdout != defaultStdout)
+			{
+				// reset stdout
+				SetStdHandle(StdOutputHandle, defaultStdout);
+			}
+
+			// reopen stdout
+			var writer = new System.IO.StreamWriter(Console.OpenStandardOutput()) { AutoFlush = true };
+			Console.SetOut(writer);
+			NonBlockingConsole.StartProcessingMessages();
+
+			return alloccedConsole;
 		}
 
 		public static void EventLogMessage(bool isError, string message, params string[] parts)

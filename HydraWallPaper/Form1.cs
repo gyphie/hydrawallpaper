@@ -9,6 +9,7 @@ using HydraPaper.Properties;
 using Ookii.Dialogs;
 using System.Diagnostics;
 using System.Reflection;
+using System.Text.RegularExpressions;
 
 namespace HydraPaper
 {
@@ -311,7 +312,11 @@ namespace HydraPaper
 		private void bwWallPaper_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
 		{
 			this.lblWorking.Visible = false;
-			this.txtImagesUsed.Text = string.Join(", ", this.jobArguments.FileNamesUsed);
+			this.lbImagesUsed.Items.Clear();
+			foreach (var fileName in this.jobArguments.FileNamesUsed)
+			{
+				this.lbImagesUsed.Items.Add(fileName);
+			}
 		}
 
 		private void btnStart_Click(object sender, EventArgs e)
@@ -640,6 +645,214 @@ namespace HydraPaper
 				this.timRotate.Start();
 			}
 		}
+
+		private void copyPathToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			var listBox = this.GetContextMenuSourceControl(sender as ToolStripMenuItem) as ListBox;
+			if (listBox == null || listBox.SelectedItem == null)
+			{
+				Program.DebugMessage($"Somehow the menu item was activated without a list box or selected item. The clipboard was cleared.");
+				Clipboard.Clear();
+				return;
+			}
+
+			var path = System.IO.Path.GetDirectoryName(listBox.SelectedItem as string);
+			if (path == null)
+			{
+				Program.DebugMessage($"Selected item had no path (null). Clipboard was cleared.");
+				Clipboard.Clear();
+			}
+			else
+			{
+				Program.DebugMessage($"Copied selected item path to clipboard: {path}");
+
+				Clipboard.SetText(path);
+			}
+		}
+
+		private void copyFileNameToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			var listBox = this.GetContextMenuSourceControl(sender as ToolStripMenuItem) as ListBox;
+			if (listBox == null || listBox.SelectedItem == null)
+			{
+				Program.DebugMessage($"Somehow the menu item was activated without a list box or selected item. The clipboard was cleared.");
+				Clipboard.Clear();
+				return;
+			}
+
+			var fileName = listBox.SelectedItem as string;
+			if (fileName == null)
+			{
+				Program.DebugMessage($"Selected item had no file name (null). Clipboard was cleared.");
+				Clipboard.Clear();
+			}
+			else
+			{
+				Program.DebugMessage($"Copied selected item to clipboard: {fileName}");
+				Clipboard.SetText(fileName);
+			}
+		}
+
+		private void openImageToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			var listBox = this.GetContextMenuSourceControl(sender as ToolStripMenuItem) as ListBox;
+			if (listBox == null || listBox.SelectedItem == null)
+			{
+				Program.DebugMessage($"Somehow the menu item was activated without a list box or selected item.");
+				MessageBox.Show("Unable to open image. You may not have permissions or it may no longer exist.", "Error Opening Image", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				return;
+			}
+
+
+			var fileName = listBox.SelectedItem as string;
+			if (!this.OpenImage(fileName))
+			{
+				MessageBox.Show("Unable to open image. You may not have permissions or it may no longer exist.", "Error Opening Image", MessageBoxButtons.OK, MessageBoxIcon.Error);
+			}
+		}
+
+		private void openFolderToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			var listBox = this.GetContextMenuSourceControl(sender as ToolStripMenuItem) as ListBox;
+			if (listBox == null || listBox.SelectedItem == null)
+			{
+				Program.DebugMessage($"Somehow the menu item was activated without a list box or selected item.");
+				MessageBox.Show("Unable to open folder. You may not have permissions or it may no longer exist.", "Error Opening Folder", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				return;
+			}
+
+			var path = System.IO.Path.GetDirectoryName(listBox.SelectedItem as string);
+			if (string.IsNullOrEmpty(path) || !System.IO.Directory.Exists(path))
+			{
+				MessageBox.Show("Unable to open folder. You may not have permissions or it may no longer exist.", "Error Opening Folder", MessageBoxButtons.OK, MessageBoxIcon.Error);
+			}
+			else
+			{
+				try
+				{
+					var fullPath = listBox.SelectedItem as string;
+					var arguments = $"/select, {EscapeCommandArguments(fullPath)}";
+
+
+					var expProcess = new Process() {
+						StartInfo = new ProcessStartInfo() {
+							FileName = "explorer.exe",
+							WorkingDirectory = path,
+							UseShellExecute = true,
+							Arguments = arguments
+						}
+					};
+
+					Program.DebugMessage($"Opening image '{fullPath}' folder. Launching process {expProcess.StartInfo.FileName} {expProcess.StartInfo.Arguments}.");
+
+					expProcess.Start();
+				}
+				catch (Exception)
+				{
+					MessageBox.Show("Unable to open folder. You may not have permissions or it may no longer exist.", "Error Opening Folder", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				}
+			}
+		}
+
+		private void cmsImagesUsed_Opening(object sender, CancelEventArgs e)
+		{
+			var cms = sender as ContextMenuStrip;
+			if (cms == null) return;
+
+			var listBox = cms.SourceControl as ListBox;
+
+			if (listBox == null)
+			{
+				e.Cancel = true;
+				return;
+			}
+
+			var listItem = listBox.SelectedItem as string;
+			if (listItem == null)
+			{
+				e.Cancel = true;
+				return;
+			}
+
+		}
+
+		private void lbImagesUsed_MouseDown(object sender, MouseEventArgs e)
+		{
+			var listBox = sender as ListBox;
+			if (listBox == null) return;
+
+			var listItemIndex = listBox.IndexFromPoint(e.Location);
+			listBox.SelectedIndex = listItemIndex;
+		}
+
+
+		private void lbImagesUsed_DoubleClick(object sender, EventArgs e)
+		{
+			var listBox = sender as ListBox;
+			if (listBox == null || listBox.SelectedItem == null) return;
+
+			var fileName = listBox.SelectedItem as string;
+
+			if (!this.OpenImage(fileName))
+			{
+				MessageBox.Show("Unable to open image. You may not have permissions or it may no longer exist.", "Error Opening Image", MessageBoxButtons.OK, MessageBoxIcon.Error);
+			}
+		}
+
+		private void lbImagesUsed_KeyUp(object sender, KeyEventArgs e)
+		{
+			var listBox = sender as ListBox;
+			if (listBox == null)
+			{
+				return;
+			}
+
+			if (e.KeyCode == Keys.Enter && e.Modifiers == Keys.None)
+			{
+				if (listBox.SelectedIndex >= 0)
+				{
+					e.Handled = true;
+					this.lbImagesUsed_DoubleClick(listBox, e);
+				}
+			}
+		}
+
+
+		private bool OpenImage(string fullPath)
+		{
+			if (!string.IsNullOrEmpty(fullPath) && System.IO.File.Exists(fullPath))
+			{
+				try
+				{
+					new Process() { StartInfo = new ProcessStartInfo(fullPath) { UseShellExecute = true } }.Start();
+					return true;
+				}
+				catch { }
+			}
+
+			return false;
+		}
+
+		private Control GetContextMenuSourceControl(ToolStripMenuItem menuItem)
+		{
+			if (menuItem == null) return null;
+
+			var parentMenu = menuItem.GetCurrentParent();	// Not sure if this handles nested menus but it'll work for now
+
+			if (parentMenu is ContextMenuStrip)
+			{
+				return (parentMenu as ContextMenuStrip).SourceControl;
+			}
+
+			return null;
+		}
+
+		private string EscapeCommandArguments(string input)
+		{
+			// https://stackoverflow.com/a/6040946/5583585
+			return "\"" + Regex.Replace(input, @"(\\+)$", @"$1$1") + "\"";
+		}
+
 	}
 
 	public static class Ext

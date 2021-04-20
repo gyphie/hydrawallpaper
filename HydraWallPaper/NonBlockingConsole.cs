@@ -8,7 +8,7 @@ namespace HydraPaper
 	{
 		private static BlockingCollection<string> m_Queue = new BlockingCollection<string>();
 
-		static NonBlockingConsole()
+		public static void StartProcessingMessages()
 		{
 			var thread = new Thread(() => {
 				while (true) Console.WriteLine(m_Queue.Take());
